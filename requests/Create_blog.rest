@@ -2,7 +2,7 @@ POST http://localhost:3003/api/blogs/
 Content-Type: application/json
 
 {
-    "title": "Nice blog",
+    "title": "Very Nice blog",
     "author": "Kevin David",
     "url": "https://www.niceblogbykevindavid.com",
     "likes": 3353302

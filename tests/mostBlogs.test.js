@@ -1,6 +1,6 @@
-const favoriteBlog = require('../utils/list_helper').favoriteBlog
+const mostBlogs = require('../utils/list_helper').mostBlogs
 
-describe('favorite blog', () => {
+describe('most blogs', () => {
   const blogs = [
     {
       _id: '5a422a851b54a676234d17f7',
@@ -52,11 +52,10 @@ describe('favorite blog', () => {
     }
   ]
 
-  test('favorite blog', () => {
-    expect(favoriteBlog(blogs)).toEqual({
-      title: 'Canonical string reduction',
-      author: 'Edsger W. Dijkstra',
-      likes: 12
+  test('author with the most blogs', () => {
+    expect(mostBlogs(blogs)).toEqual({
+      author: 'Robert C. Martin',
+      blogs: 3
     })
   })
 })

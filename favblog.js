@@ -59,11 +59,35 @@ const blogs = [
 
 // console.log(max)
 
-let countByAuthor = _.countBy(blogs, 'author')
-let countByAuthorArray = Object.keys(countByAuthor).map(author => ({author, blogs: countByAuthor[author]}))
-let topBlogs = countByAuthorArray.reduce((prev, current) => (prev.blogs > current.blogs) ? prev : current)
+// let countByAuthor = _.countBy(blogs, 'author')
+// let countByAuthorArray = Object.keys(countByAuthor).map(author => ({author, blogs: countByAuthor[author]}))
+// let topBlogs = countByAuthorArray.reduce((prev, current) => (prev.blogs > current.blogs) ? prev : current)
 
 
-console.log('countByAuthor:', countByAuthor)
-console.log('countByAuthorArray:', countByAuthorArray)
-console.log('topBlogs:', topBlogs)
+// console.log('countByAuthor:', countByAuthor)
+// console.log('countByAuthorArray:', countByAuthorArray)
+// console.log('topBlogs:', topBlogs)
+
+// const groupByAuthor = _.groupBy(blogs, 'author')
+// console.log('groupByAuthor:', groupByAuthor)
+
+const mostLikes = _(blogs)
+  .groupBy('author')
+  .map((author, name) => ({
+    author: name,
+    likes: _.sumBy(author, 'likes')
+  }))
+  .value()
+  .reduce((prev, current) => (prev.likes > current.likes) ? prev : current)
+console.log(mostLikes)
+// return countByLikesArray.reduce((prev, current) => (prev.blogs > current.blogs) ? prev : current)
+
+
+
+// const sumByLikes = _.sumBy(blogs, 'likes')
+// console.log('sumByLikes:', sumByLikes)
+// let countByLikesArray = Object.keys(countByLikes).map(author => ({author, likes: countByLikes[author]}))
+// console.log(countByLikesArray);
+// let mostLikes = countByLikesArray.reduce((prev, current) => (prev.blogs > current.blogs) ? prev : current)
+
+// console.log('mostLikes:', mostLikes);

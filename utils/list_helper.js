@@ -19,9 +19,21 @@ const mostBlogs = (blogs) => {
   return countByAuthorArray.reduce((prev, current) => (prev.blogs > current.blogs) ? prev : current)
 }
 
+const mostLikes = (blogs) => {
+  return _(blogs)
+    .groupBy('author')
+    .map((author, name) => ({
+      author: name,
+      likes: _.sumBy(author, 'likes')
+    }))
+    .value()
+    .reduce((prev, current) => (prev.likes > current.likes) ? prev : current)
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 }

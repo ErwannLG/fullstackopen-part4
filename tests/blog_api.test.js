@@ -51,6 +51,26 @@ test('a new blog post can be created', async () => {
   )
 })
 
+test('if "likes" is missing, default to 0', async () => {
+  const newBlog = {
+    title: 'Blog with 0 likes',
+    author: 'Bernard Tapis',
+    url: 'https://blogwithzerolikes.com',
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  const blogToCheck = blogsAtEnd[6]
+  console.log('blogToCheck:', blogToCheck)
+
+  expect(blogToCheck.likes).toBe(0)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })

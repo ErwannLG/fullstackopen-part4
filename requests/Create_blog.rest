@@ -2,8 +2,9 @@ POST http://localhost:3003/api/blogs/
 Content-Type: application/json
 
 {
-    "title": "Very Nice blog",
-    "author": "Kevin David",
-    "url": "https://www.niceblogbykevindavid.com",
-    "likes": 3353302
+    "title": "Agegeg",
+    "author": "Kevin eDavid",
+    "url": "https://www.hrzhrz.fr",
+    "likes": 32,
+    "userId": "618258dfeaf83c6f3b5ebec4"
 }

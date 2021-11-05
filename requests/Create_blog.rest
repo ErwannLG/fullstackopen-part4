@@ -1,11 +1,11 @@
 POST http://localhost:3003/api/blogs/
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsemEiLCJpZCI6IjYxODI4ZGI5MThiMDIxZjUzNmY5ODg3YiIsImlhdCI6MTYzNTk0NTk5MX0.u3CNYwglh0molgDJ753_T9hojVivV2lRt5SVkGzVzHk
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsemEiLCJpZCI6IjYxODI4ZGI5MThiMDIxZjUzNmY5ODg3YiIsImlhdCI6MTYzNjEwMTM4OSwiZXhwIjoxNjM2MTA0OTg5fQ.JfKM4e9Q5eoO4xcEmaYlIrpGXke6Na9ns6us9V3JTuk
 
 {
-    "title": "Test after tokens 6",
-    "author": "Kevin Token 6",
+    "title": "Vendredy",
+    "author": "Rob",
     "url": "https://www.hrzhrz-token.co.uk",
     "likes": 1,
-    "userId": "61829192ba677a02c125c474"
+    "userId": "61828db918b021f536f9887b"
 }

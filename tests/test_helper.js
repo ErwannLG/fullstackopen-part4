@@ -52,6 +52,21 @@ const initialBlogs = [
   }
 ]
 
+// const initialUser = [
+//   {
+//     username: 'Tester',
+//     name: 'Test User',
+//     blogs: [],
+//     password: hashedPassword,
+//   }
+// ]
+
+// const testUser = {
+//   username: initialUser.username,
+//   id: initialUser.id
+// }
+// const testUserToken = jwt.sign(testUser, process.env.SECRET)
+
 const blogsInDb = async () => {
   const blogs = await Blog.find({})
   return blogs.map(blog => blog.toJSON())

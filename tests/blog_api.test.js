@@ -3,16 +3,34 @@ const supertest = require('supertest')
 const helper = require('./test_helper')
 const app = require('../app')
 const api = supertest(app)
+const bcrypt = require('bcrypt')
 
 const Blog = require('../models/blog')
+const User = require('../models/user')
+
+let token
 
 beforeEach(async () => {
   await Blog.deleteMany({})
+  await User.deleteMany({})
 
   for (let blog of helper.initialBlogs) {
     let blogOject = new Blog(blog)
     await blogOject.save()
   }
+
+  const passwordHash = await bcrypt.hash('truc', 10)
+  const userObject = new User({ username: 'test', passwordHash })
+  await userObject.save()
+
+  const login = await api
+    .post('/api/login')
+    .send({
+      username: 'test',
+      password: 'truc'
+    })
+
+  token = login.body.token
 })
 
 test('all blogs are returned', async () => {
@@ -38,6 +56,7 @@ test('a new blog post can be created', async () => {
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `bearer ${token}`)
     .send(newBlog)
     .expect(200)
     .expect('Content-Type', /application\/json/)
@@ -60,6 +79,7 @@ test('if "likes" is missing, default to 0', async () => {
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `bearer ${token}`)
     .send(newBlog)
     .expect(200)
     .expect('Content-Type', /application\/json/)
@@ -79,23 +99,50 @@ test('if title and url are missing from request, respond 400 Bad Request', async
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `bearer ${token}`)
     .send(newBlog)
     .expect(400)
 })
 
 test('a blog can be deleted', async () => {
   const blogsAtStart = await helper.blogsInDb()
-  const blogToDelete = blogsAtStart[0]
+
+  const newBlog = {
+    title: 'Blog to delete',
+    author: 'Me',
+    url: 'https://www.blogtodelete.co.uk/',
+    likes: 1,
+  }
+
+  await api
+    .post('/api/blogs')
+    .set('Authorization', `bearer ${token}`)
+    .send(newBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAfterPost = await helper.blogsInDb()
+
+  expect(blogsAfterPost).toHaveLength(helper.initialBlogs.length + 1)
+  let titles = blogsAfterPost.map(r => r.title)
+  expect(titles).toContain(
+    'Blog to delete'
+  )
+
+  const blogToDelete = blogsAfterPost[6]
 
   await api
     .delete(`/api/blogs/${blogToDelete.id}`)
+    .set('Authorization', `bearer ${token}`)
     .expect(204)
 
   const blogsAtEnd = await helper.blogsInDb()
 
-  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
+  console.log(blogsAfterPost)
 
-  const titles = blogsAtEnd.map(r => r.title)
+  expect(blogsAtEnd).toHaveLength(blogsAfterPost.length - 1)
+
+  titles = blogsAtEnd.map(r => r.title)
 
   expect(titles).not.toContain(blogToDelete.title)
 })

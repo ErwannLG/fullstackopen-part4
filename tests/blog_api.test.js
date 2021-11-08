@@ -105,8 +105,6 @@ test('if title and url are missing from request, respond 400 Bad Request', async
 })
 
 test('a blog can be deleted', async () => {
-  const blogsAtStart = await helper.blogsInDb()
-
   const newBlog = {
     title: 'Blog to delete',
     author: 'Me',
@@ -162,6 +160,23 @@ test('a blog can be updated', async () => {
   const blogsAtEnd = await helper.blogsInDb()
 
   expect(blogsAtEnd[0].likes).toBe(22)
+})
+
+test('adding a blog fails if a token is not provided', async () => {
+  const newBlog = {
+    title: 'How I Built My Blog',
+    author: 'Josh W. Comeau',
+    url: 'https://www.joshwcomeau.com/blog/how-i-built-my-blog/',
+    likes: 13,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(401)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
 })
 
 afterAll(() => {
